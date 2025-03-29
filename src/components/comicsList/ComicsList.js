@@ -2,10 +2,11 @@ import useMarvelService from "../../services/MarvelService";
 import { useState, useEffect } from "react";
 import "./comicsList.scss";
 import { Link } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../erorrMessage/ErorrMessage";
-import PropTypes, { object } from "prop-types";
+import PropTypes from "prop-types";
 
 const ComicsList = ({ onComicsSelected }) => {
   const [comicsList, setComicsList] = useState([]);
@@ -23,6 +24,7 @@ const ComicsList = ({ onComicsSelected }) => {
     initial ? setNewItemLoading(false) : setNewItemLoading(true);
     getAllComics(offset).then(onComicsListLoaded);
   };
+
   const onComicsListLoaded = (newComicsList) => {
     let ended = false;
     if (newComicsList.length < 9) {
@@ -46,27 +48,27 @@ const ComicsList = ({ onComicsSelected }) => {
       }
 
       return (
-        <li
-          className="comics__item"
-          key={i}
-          // onClick={() => {
-          //   console.log("Выбран комикс с ID:", item.id);
-          //   onComicsSelected(item.id);
-          // }}
-        >
-          <Link to={`/comics/${item.id}`}>
-            <img
-              src={item.thumbnail}
-              alt={item.title}
-              className="comics__item-img"
-            />
-            <div className="comics__item-name">{item.title}</div>
-            <div className="comics__item-price">{item.price}</div>
-          </Link>
-        </li>
+        <CSSTransition key={item.id} timeout={500} classNames="comics__item">
+          <li className="comics__item">
+            <Link to={`/comics/${item.id}`}>
+              <img
+                src={item.thumbnail}
+                alt={item.title}
+                className="comics__item-img"
+                style={imgStyle}
+              />
+              <div className="comics__item-name">{item.title}</div>
+              <div className="comics__item-price">{item.price}</div>
+            </Link>
+          </li>
+        </CSSTransition>
       );
     });
-    return <ul className="comics__grid">{items}</ul>;
+    return (
+      <ul className="comics__grid">
+        <TransitionGroup component={null}>{items}</TransitionGroup>
+      </ul>
+    );
   }
 
   const items = renderItem(comicsList);
@@ -79,7 +81,6 @@ const ComicsList = ({ onComicsSelected }) => {
       {errorMessage}
       {spinner}
       {items}
-
       <button
         className="button button__main button__long"
         disabled={newItemLoading}
