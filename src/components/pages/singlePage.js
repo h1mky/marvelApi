@@ -5,6 +5,7 @@ import useMarvelService from "../../services/MarvelService";
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../erorrMessage/ErorrMessage";
 import AppBanner from "../appBanner/AppBanner";
+import { Helmet } from "react-helmet";
 
 // Хотелось бы вынести функцию по загрузке данных как отдельный аргумент
 // Но тогда мы потеряем связь со стэйтами загрузки и ошибки
