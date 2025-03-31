@@ -5,7 +5,8 @@ const useMarvelService = () => {
   const _apiKey = "apikey=d4eecb0c66dedbfae4eab45d312fc1df";
   const _baseOffset = 0; // Changed to 0 since the new API has IDs from 1-20
 
-  const { loading, request, error, clearError } = useHttp();
+  const { loading, request, error, clearError, process, setProcess } =
+    useHttp();
 
   const getAllCharacters = async (offset = _baseOffset) => {
     const res = await request(
@@ -71,6 +72,8 @@ const useMarvelService = () => {
   return {
     loading,
     error,
+    process,
+    setProcess,
     getAllCharacters,
     getCharacter,
     getAllComics,

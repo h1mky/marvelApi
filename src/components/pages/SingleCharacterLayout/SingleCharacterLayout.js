@@ -1,4 +1,5 @@
 import "./singleCharacterLayout.scss";
+import { Helmet } from "react-helmet";
 
 const SingleCharacterLayout = ({ data }) => {
   const { name, description, thumbnail } = data;
